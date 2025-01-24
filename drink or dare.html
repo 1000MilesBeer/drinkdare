@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drink or Dare!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            padding: 20px;
+        }
+        h1 {
+            color: #ff5722;
+        }
+        button {
+            background-color: #ff9800;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #e68900;
+            transform: scale(1.05);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            min-height: 50px; /* เพื่อให้ช่องข้อความไม่กระโดด */
+        }
+        .loading {
+            color: #ff9800;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>1000 Miles Game ใครได้ยก? 🍻</h1>
+        <p>กดปุ่มด้านล่างเพื่อสุ่มคำท้าหรือกิจกรรม!</p>
+        <button onclick="startGame()" id="actionButton">สุ่มคำท้า</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function startGame() {
+            const dares = [
+                "ดื่มเท่าไหร่ก็ได้ 1 อึก!",
+                "สั่งใครก็ได้ให้ ยกแก้ว",
+                "ดื่มเองหมดแก้ว!",
+                "ทุกคนยก 1 อึก!",
+                "โทรหาเพื่อนสนิทแล้วบอกว่าคิดถึง ถ้าเพื่อนไม่รับยกหมดแก้ว!",
+                "ยกหมดแก้วทุกคนในวง!",
+                "ข้ามไปที่คนต่อไป!"
+            ];
+            
+            const resultDiv = document.getElementById("result");
+            const button = document.getElementById("actionButton");
+            
+            let currentIndex = 0; // ใช้สำหรับหมุนคำ
+            const loadingText = "🎲 กำลังหมุนคำ...";
+            
+            // ปิดใช้งานปุ่มชั่วคราว
+            button.disabled = true;
+            button.style.backgroundColor = "#cccccc";
+            resultDiv.innerHTML = `<span class="loading">${loadingText}</span>`;
+
+            // เริ่มหมุนคำสุ่ม
+            const interval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % dares.length; // เปลี่ยนคำ
+                resultDiv.innerText = `🎲 ${dares[currentIndex]}`;
+            }, 100); // เปลี่ยนคำทุก 100ms
+
+            // หยุดหมุนหลังจาก 10 วินาที
+            setTimeout(() => {
+                clearInterval(interval); // หยุดการหมุน
+                const finalDare = dares[Math.floor(Math.random() * dares.length)];
+                resultDiv.innerText = `🎉 คุณต้องทำ: ${finalDare}`;
+
+                // เปิดใช้งานปุ่มอีกครั้ง
+                button.disabled = false;
+                button.style.backgroundColor = "#ff9800";
+            }, 5000); // หมุนเป็นเวลา 10 วินาที
+        }
+    </script>
+</body>
+</html>
